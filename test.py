@@ -13,7 +13,9 @@ daystate = 0
 
 zoom = 1
 
+
 handx = 0
+handss = 0
 
 nowscene = 1
 
@@ -33,25 +35,37 @@ def seasons():
 
 #scene--------------------------------------------------------------------------------------------------------------
 def scene1():
+    p5.image(scene1background,0,0,800,800)
     p5.image(invitationin,400,200,238,391)
     if(handx < 238):
-        p5.image(invitationout1,400,200,238-100,391)
+        p5.image(invitationout1,400,200,238-handx,391)
+    else:
+        p5.image(invitationout2,162+(476-handx),200,238-(476-handx),391)
+
+def scene30():
+    p5.image(BHT,0,0,800,800)
 
 def scene3():
     global bright
     p5.tint(bright)
-    p5.imageMode('center')
     p5.image(BHT, 0-zoom/2, 0-zoom/2, 800 + zoom, 800 + zoom)
 
 #hand process-------------------------------------------------------------------------------------------------------------
 
 def scene1_process(handLms):
-    global handx
+    global handx, handss
     if(200 < handLms.landmark[0].x * 800 < 600):
         temp1 = int(handLms.landmark[0].x * 800)
+        if(handx < 400):
+            handss = 0
+        else:
+            handss = 1
     else:
-        temp1 = 201
-    handx = int(((temp1 - 200)/400)*238)
+        if(handss == 0):
+            temp1 = 201
+        else:
+            temp1 = 599
+    handx = int(((temp1 - 200)/400)*476)
 
 def scene3_process(handLms):
     global zoom
@@ -62,11 +76,13 @@ def scene3_process(handLms):
 
 def setup():
     global mpHands, hands, mpDraw, cap
-    global BHT,invitationin, invitationout1
+    global BHT,invitationin, invitationout1, invitationout2, scene1background
     p5.size(800, 800)
 
+    scene1background = p5.load_image("scene1background.png")
     invitationin = p5.load_image("invitation3.png")
     invitationout1 = p5.load_image("invitation.png")
+    invitationout2 = p5.load_image("invitation1.jpg")
     BHT = p5.loadImage("HOTEL GB.png")
 
     cap = cv2.VideoCapture(0)
