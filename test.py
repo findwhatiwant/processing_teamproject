@@ -38,9 +38,17 @@ scene30v = 0
 zoom = 1
 stopstate = 0
 
+#scene31 variable
+scene31locations = []
+knockcnt = 0
+
+
 #scene4 variable
 getkeystate = 0
 pickupstate = 0
+scene4handx = 0
+scene4handy = 0
+justcheck = 0
 
 nowscene = 1
 
@@ -140,6 +148,23 @@ def scene3():
             settingstate = 0
             nowscene += 1
 
+def scene31():
+    global nowscene,settingstate
+    # seasons()
+    if(knockcnt <= 10):
+        fadein()
+    p5.background(bright)
+    p5.tint(bright)
+    p5.image(hotel, 400-278,300,556,417)
+    p5.circle(scene4handx,scene4handy, 30)
+    if(knockcnt > 10):
+        fadeout()
+        print(bright)
+        if (bright < 8):
+            settingstate = 0
+            nowscene += 1
+
+
 def scene4():
     global settingstate, nowscene
     if(pickupstate == 0):
@@ -158,6 +183,9 @@ def scene4():
         if (bright < 8):
             settingstate = 0
             nowscene += 1
+    p5.no_stroke()
+    p5.fill(255,0,0)
+    p5.circle(scene4handx, scene4handy, 50)
 
 
 
@@ -208,8 +236,29 @@ def scene3_process(handLms):
     else:
         zoom = 700
 
+def scene31_process(handLms):
+    global scene4handx,scene4handy,scene31locations, knockcnt,settingstate,justcheck
+    scene4handx = int(handLms.landmark[12].x*800)
+    scene4handy = int(handLms.landmark[12].y*800)
+
+    temp1 = int(handLms.landmark[10].y*800)
+    temp2 = int(handLms.landmark[9].y*800)
+
+    scene31locations.append(temp2)
+    print(knockcnt)
+    if(len(scene31locations) == 10):
+        scene31locations.pop(0)
+        if(temp2 > temp1 and scene31locations[0]+200 < scene31locations[-1]):
+            knockcnt += 1
+    if(knockcnt > 10 and justcheck == 0):
+        settingstate = 0
+        justcheck = 1
+
+
+
+
 def scene4_process(handLms):
-    global getkeystate, pickupstate,settingstate
+    global getkeystate, pickupstate,settingstate,scene4handx, scene4handy
     temp1 = int(handLms.landmark[0].x*800)
     temp2 = int(handLms.landmark[12].x*800)
     temp3 = int(handLms.landmark[0].y*800)
@@ -219,9 +268,12 @@ def scene4_process(handLms):
     temp6 = int(handLms.landmark[8].x * 800)
     temp7 = int(handLms.landmark[16].x * 800)
     temp8 = int(handLms.landmark[20].x * 800)
+
+    scene4handx = int(handLms.landmark[12].x*800)
+    scene4handy = int(handLms.landmark[12].y*800)
     if(abs(temp1-temp2) < 50 and temp4 > temp3 and getkeystate == 0):
         getkeystate = 1
-    if(getkeystate == 1 and pickupstate == 0 and abs(temp5-temp6) < 100 and abs(temp5-temp7) < 100 and abs(temp5-temp8) < 100 and abs(temp5-temp4) < 100):
+    if(getkeystate == 1 and pickupstate == 0 and abs(temp5-temp6) < 100 and abs(temp5-temp7) < 100 and abs(temp5-temp8) < 100 and abs(temp5-temp4) < 100 and 450 < scene4handx< 650 and 450 < scene4handy < 650):
         pickupstate = 1
         settingstate = 0
 
@@ -231,7 +283,7 @@ def scene4_process(handLms):
 
 def setup():
     global mpHands, hands, mpDraw, cap
-    global BHT,invitationin, invitationout1, invitationout2, scene1background, scene2background,scene4background, scene2man, train, ticket, ticketcheck, scene4man, scene4man1, scene4key
+    global BHT,invitationin, invitationout1, invitationout2, scene1background, scene2background,scene4background, scene2man, train, ticket, ticketcheck, scene4man, scene4man1, scene4key, hotel
     p5.size(800, 800)
 
     invitationin = p5.load_image("invitation3.png")
@@ -252,6 +304,7 @@ def setup():
     scene4background = p5.load_image("scene4background.png")
 
     BHT = p5.loadImage("HOTEL GB.png")
+    hotel = p5.load_image("hotel.png")
 
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
@@ -287,6 +340,8 @@ def draw():
             elif(nowscene == 4):
                 scene3_process(handLms)
             elif(nowscene == 5):
+                scene31_process(handLms)
+            elif(nowscene == 6):
                 scene4_process(handLms)
 
     cv2.imshow("Image", img)
@@ -300,6 +355,8 @@ def draw():
     elif(nowscene == 4):
         scene3()
     elif(nowscene == 5):
+        scene31()
+    elif(nowscene == 6):
         scene4()
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
