@@ -41,7 +41,7 @@ stopstate = 0
 #scene31 variable
 scene31locations = []
 knockcnt = 0
-
+backgroundtype = 0
 
 #scene4 variable
 getkeystate = 0
@@ -50,20 +50,27 @@ scene4handx = 0
 scene4handy = 0
 justcheck = 0
 
-nowscene = 1
+#scene5 variable
+boxopened = 0
+scene4pickupstate = 0
+
+#scene6 variable
+textY = 200
+
+nowscene = 6
 
 #effect---------------------------------------------------------------------------------------------------------
 def seasons():
-    global globaltime,bright,daystate
+    global globaltime,bright,daystate,backgroundtype
     bright = 255 - globaltime
-    if(daystate == 0):
-        globaltime += 1
-    else:
-        globaltime -= 1
-    if(globaltime > 255):
-        daystate = 1
-    elif(globaltime < 0):
-        daystate = 0
+    globaltime += 1
+    if(globaltime > 254):
+        if (backgroundtype < 3):
+            backgroundtype += 1
+        elif (backgroundtype == 3):
+            backgroundtype = 0
+        globaltime = 0
+
 
 def fadein():
     global bright, settingstate, stop
@@ -150,12 +157,130 @@ def scene3():
 
 def scene31():
     global nowscene,settingstate
-    # seasons()
+    if (knockcnt <= 10):
+        seasons()
+    if(knockcnt > 10):
+        p5.tint(bright)
+    p5.image(scene31background4, -173, 0, 1146, 800)
     if(knockcnt <= 10):
-        fadein()
-    p5.background(bright)
-    p5.tint(bright)
-    p5.image(hotel, 400-278,300,556,417)
+        if (backgroundtype == 2):
+            p5.tint(255, bright)
+        elif (backgroundtype > 2):
+            p5.tint(255, 0)
+        else:
+            p5.tint(255, 255)
+    p5.image(scene31background3, -173, 0, 1146, 800)
+    if (knockcnt <= 10):
+        if (backgroundtype == 1):
+            p5.tint(255, bright)
+        elif (backgroundtype > 1):
+            p5.tint(255, 0)
+        else:
+            p5.tint(255,255)
+    p5.image(scene31background2, -173, 0, 1146, 800)
+    if (knockcnt <= 10):
+        if (backgroundtype == 0):
+            p5.tint(255, bright)
+        elif (backgroundtype > 0):
+            p5.tint(255, 0)
+    p5.image(scene31background1, -173, 0, 1146, 800)
+    if (knockcnt <= 10):
+        p5.tint(255)
+
+    p5.image(hotel, 400-278,335,556,417)
+
+
+    if(309 < scene4handx < 400 and 460 < scene4handy < 620):
+        p5.tint(255,255)
+    else:
+        p5.tint(255,0)
+
+    p5.image(window1, 309, 595, 11, 15)
+    p5.image(window1, 330, 595, 11, 15)
+
+    p5.image(window1, 309, 559, 11, 15)
+    p5.image(window1, 309, 523, 11, 15)
+    p5.image(window1, 309, 487, 11, 15)
+
+    p5.image(window1, 329, 559, 11, 15)
+    p5.image(window1, 329, 523, 11, 15)
+    p5.image(window1, 329, 487, 11, 15)
+
+    p5.image(window1, 349, 559, 11, 15)
+    p5.image(window1, 349, 523, 11, 15)
+    p5.image(window1, 349, 487, 11, 15)
+
+    p5.image(window1, 369, 559, 11, 15)
+    p5.image(window1, 369, 523, 11, 15)
+    p5.image(window1, 369, 487, 11, 15)
+
+    if (412 < scene4handx < 490 and 460 < scene4handy < 620):
+        p5.tint(255, 255)
+    else:
+        p5.tint(255, 0)
+
+    p5.image(window1, 412, 559, 11, 15)
+    p5.image(window1, 412, 523, 11, 15)
+    p5.image(window1, 412, 487, 11, 15)
+
+    p5.image(window1, 432, 559, 11, 15)
+    p5.image(window1, 432, 523, 11, 15)
+    p5.image(window1, 432, 487, 11, 15)
+
+    p5.image(window1, 452, 559, 11, 15)
+    p5.image(window1, 452, 523, 11, 15)
+    p5.image(window1, 452, 487, 11, 15)
+
+    p5.image(window1, 474, 595, 11, 15)
+    p5.image(window1, 454, 595, 11, 15)
+
+    p5.image(window1, 472, 559, 11, 15)
+    p5.image(window1, 472, 523, 11, 15)
+    p5.image(window1, 472, 487, 11, 15)
+
+    if (210 < scene4handx < 280 and 520 < scene4handy < 610):
+        p5.tint(255, 255)
+    else:
+        p5.tint(255, 0)
+
+    p5.image(window1, 274, 598, 11, 15)
+    p5.image(window1, 274, 562, 11, 15)
+    p5.image(window1, 274, 526, 11, 15)
+
+    p5.image(window1, 254, 598, 11, 15)
+    p5.image(window1, 254, 562, 11, 15)
+    p5.image(window1, 254, 526, 11, 15)
+
+    p5.image(window1, 234, 598, 11, 15)
+    p5.image(window1, 234, 562, 11, 15)
+    p5.image(window1, 234, 526, 11, 15)
+
+    p5.image(window1, 214, 598, 11, 15)
+    p5.image(window1, 214, 562, 11, 15)
+    p5.image(window1, 214, 526, 11, 15)
+
+    if (500 < scene4handx < 570 and 520 < scene4handy < 610):
+        p5.tint(255, 255)
+    else:
+        p5.tint(255, 0)
+
+    p5.image(window1, 564, 598, 11, 15)
+    p5.image(window1, 564, 562, 11, 15)
+    p5.image(window1, 564, 526, 11, 15)
+
+    p5.image(window1, 544, 598, 11, 15)
+    p5.image(window1, 544, 562, 11, 15)
+    p5.image(window1, 544, 526, 11, 15)
+
+    p5.image(window1, 524, 598, 11, 15)
+    p5.image(window1, 524, 562, 11, 15)
+    p5.image(window1, 524, 526, 11, 15)
+
+    p5.image(window1, 504, 598, 11, 15)
+    p5.image(window1, 504, 562, 11, 15)
+    p5.image(window1, 504, 526, 11, 15)
+
+    p5.tint(255,255)
     p5.circle(scene4handx,scene4handy, 30)
     if(knockcnt > 10):
         fadeout()
@@ -187,7 +312,32 @@ def scene4():
     p5.fill(255,0,0)
     p5.circle(scene4handx, scene4handy, 50)
 
+def scene5():
+    global nowscene
+    fadein()
+    p5.tint(bright)
+    p5.image(scene1background,0,0,800,800)
+    if(boxopened == 0):
+        p5.image(boxclose,250,400,300,300)
+    elif(boxopened == 1):
+        p5.image(boxopen, 250, 400, 300, 300)
+    p5.circle(scene4handx, scene4handy, 50)
+    if(scene4pickupstate == 1):
+        fadeout()
+        print(bright)
+        if (bright < 8):
+            nowscene += 1
 
+def scene6():
+    global textY
+    p5.background(0)
+    p5.fill(255)
+    p5.text_font(font1)
+    p5.text("GRAND BUDAPEST HOTEL \n\n\n\n\n\n Develop: Woosik joe \n\n Sub Develop: Sangmin Oh \n\n Design & Drawing: Yeonju Oh, Sangmin Oh"
+            + "\n\n\nHotel image: Yeonju Oh\n\ninvitation image: Yeonju Oh\n\ninvitation background: Yeonju Oh\n\ntrain image: Sangmin Oh\n\nscene2man image: sangmin Oh\n\nticket image: Woosik Joe"
+            + "\n\nscene4man image: Sangmin Oh\n\nHotel background: Yeonju Oh\n\nbox image: Woosik Joe"
+            + "\n\n\n\n\n\n\n\n\n Thank you for Watching \n\n Happy End of class",50,textY)
+    textY -= 2
 
 #hand process-------------------------------------------------------------------------------------------------------------
 
@@ -277,13 +427,34 @@ def scene4_process(handLms):
         pickupstate = 1
         settingstate = 0
 
+def scene5_process(handLms):
+    global boxopened,scene4handy, scene4handx,scene4pickupstate,settingstate
+    temp1 = handLms.landmark[4].x * 800
+    temp2 = handLms.landmark[12].x * 800
+    temp4 = int(handLms.landmark[12].y * 800)
+    temp5 = int(handLms.landmark[4].x * 800)
+    temp6 = int(handLms.landmark[8].x * 800)
+    temp7 = int(handLms.landmark[16].x * 800)
+    temp8 = int(handLms.landmark[20].x * 800)
+    if(abs(temp1-temp2) > 400):
+        boxopened = 1
+
+    if (boxopened == 1 and scene4pickupstate == 0 and abs(temp5 - temp6) < 100 and abs(temp5 - temp7) < 100 and abs(
+            temp5 - temp8) < 100 and abs(temp5 - temp4) < 100 and 250 < scene4handx < 550 and 300 < scene4handy < 600):
+        settingstate = 0
+        scene4pickupstate = 1
+
+    scene4handx = int(handLms.landmark[12].x * 800)
+    scene4handy = int(handLms.landmark[12].y * 800)
+
 
 
 
 
 def setup():
     global mpHands, hands, mpDraw, cap
-    global BHT,invitationin, invitationout1, invitationout2, scene1background, scene2background,scene4background, scene2man, train, ticket, ticketcheck, scene4man, scene4man1, scene4key, hotel
+    global BHT,invitationin, invitationout1, invitationout2, scene1background, scene2background,scene4background, scene2man, train, ticket, ticketcheck, scene4man, scene4man1, scene4key, hotel,scene31background1,scene31background2,scene31background3,scene31background4,window1
+    global boxopen, boxclose,font1
     p5.size(800, 800)
 
     invitationin = p5.load_image("invitation3.png")
@@ -301,7 +472,20 @@ def setup():
 
     scene1background = p5.load_image("scene1background.png")
     scene2background = p5.load_image("scene2background.jpg")
+
+    scene31background1 = p5.load_image("scene31background1.jpg")
+    scene31background2 = p5.load_image("scene31background2.jpg")
+    scene31background3 = p5.load_image("scene31background3.jpg")
+    scene31background4 = p5.load_image("scene31background4.jpg")
+
+    font1 = p5.create_font("NanumGothic.ttf", 20)
+
+    window1 = p5.load_image("window1.png")
+
     scene4background = p5.load_image("scene4background.png")
+
+    boxopen = p5.load_image("boxopen.png")
+    boxclose = p5.load_image("boxclose.png")
 
     BHT = p5.loadImage("HOTEL GB.png")
     hotel = p5.load_image("hotel.png")
@@ -343,6 +527,8 @@ def draw():
                 scene31_process(handLms)
             elif(nowscene == 6):
                 scene4_process(handLms)
+            elif(nowscene == 7):
+                scene5_process(handLms)
 
     cv2.imshow("Image", img)
 
@@ -358,6 +544,10 @@ def draw():
         scene31()
     elif(nowscene == 6):
         scene4()
+    elif(nowscene == 7):
+        scene5()
+    elif(nowscene == 8):
+        scene6()
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         cap.release()
